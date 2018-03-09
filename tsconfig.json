@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "outDir": "./functions/",
+    "module": "es6",
+    "target": "es5",
+    "removeComments": true,
+    "strictNullChecks": true,
+    "jsx": "react",
+    "jsxFactory": "h",
+    "sourceMap": true
+  },
+  "include": [
+    "./src/",
+    "./index.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

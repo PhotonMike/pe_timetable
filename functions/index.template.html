@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Egészség quiz</title>
+    <meta name=viewport content="width=device-width, initial-scale=1">
+    <link rel="shortcut icon" type="image/png" href="/favicon.png"/>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="theme-color" content="#bf2400"/>
+    <!--<link rel="stylesheet" href="styles.css">-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link rel="stylesheet" href="https://code.getmdl.io/1.3.0/material.red-deep_orange.min.css" />
+    <script>window.__questions__ = /** ::Q:: **/;</script>
+    <script>window.__users__ = /** ::U:: **/;</script>
+    <!-- index template -->
+</head>
+<body style="height: 100%; width: 100%;">
+<div id="root"><!-- ::APP:: --></div>
+<script defer src="https://code.getmdl.io/1.3.0/material.min.js"></script>
+<script async type="text/javascript" src="bundle.js"></script>
+<script>
+    if ('serviceWorker' in navigator) {
+        window.addEventListener('load', function() {
+            navigator.serviceWorker.register('/sw.js').then(function(registration) {
+                // Registration was successful
+                console.log('ServiceWorker registration successful with scope: ', registration.scope);
+            }, function(err) {
+                // registration failed :(
+                console.log('ServiceWorker registration failed: ', err);
+            });
+        });
+    }
+</script>
+</body>
+</html>
