@@ -1,10 +1,5 @@
 "use strict";
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.userScore = userScore;
-exports.qScore = qScore;
+Object.defineProperty(exports, "__esModule", { value: true });
 function userScore(user, questions) {
     var score = 0;
     Object.keys(user).forEach(function (a) {
@@ -14,7 +9,7 @@ function userScore(user, questions) {
     });
     return score;
 }
-
+exports.userScore = userScore;
 function qScore(users, questions, qId) {
     var score = 0;
     var all = 0;
@@ -29,3 +24,5 @@ function qScore(users, questions, qId) {
     });
     return score / all;
 }
+exports.qScore = qScore;
+//# sourceMappingURL=common.js.map

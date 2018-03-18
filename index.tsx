@@ -1,16 +1,31 @@
 import * as functions from 'firebase-functions';
 import * as admin from 'firebase-admin';
-import { h } from 'preact';
-import { render } from 'preact-render-to-string';
-import App from './src/App';
 import * as express from 'express';
 import * as fs from 'fs';
+import * as compression from 'compression';
+import * as firebase from 'firebase';
+import * as Database from './src/Database';
+import * as React from 'react';
+import { renderToString } from 'react-dom/server';
+import App from "./src/App";
+import { SheetsRegistry } from 'react-jss/lib/jss';
+import JssProvider from 'react-jss/lib/JssProvider';
+import { MuiThemeProvider, createMuiTheme, createGenerateClassName } from 'material-ui/styles';
+import { green, red } from 'material-ui/colors';
+import theme from './src/theme';
+
+console.log("server script start");
 
 const index = fs.readFileSync(__dirname + '/index.template.html', 'utf8');
-const fbapp = admin.initializeApp(functions.config().firebase);
-const db = fbapp.firestore();
-const quizDb = db.collection("quiz");
-const usersDb = db.collection("users");
+const bundlejs = fs.readFileSync(__dirname + '/bundle.js', 'utf8');
+
+/*const fbDetails = functions.config().firebase;
+const fbapp = admin.initializeApp(fbDetails);
+const db = fbapp.firestore();*/
+const fireBase = Database.getFirebase();
+const db = fireBase.firestore();
+
+const tableDb = db.collection("tables");
 const metaDb = db.collection("metadata");
 
 let loadTimes = 0;
@@ -25,57 +40,66 @@ metaDb.get().then(metadata => {
     });
 });
 
-
 const app = express();
+
+app.use(compression());
+
 // '/' route
 app.get(['/', '/app', '/index.html', '/index'], (req, res) => {
-    let quest = {};
-    let usr = {};
-    quizDb.get().then(questions => {
-        questions.forEach(doc => {
-            quest[doc.id] = doc.data();
-        });
-        usersDb.get().then(users => {
-            users.forEach(doc => {
-                usr[doc.id] = doc.data();
-            });
-            const html = render(<App questions={quest} users={usr}/>);
-            const appHtml = index.replace('<!-- ::APP:: -->', html);
-            const app1Html = appHtml.replace('/** ::Q:: **/', JSON.stringify(quest));
-            const finalHtml = app1Html.replace('/** ::U:: **/', JSON.stringify(usr));
-            res.set('Cache-Control', 'public, max-age=60, s-maxage=300');
-            res.send(finalHtml);
+    Database.getGlobalAnd(fireBase, (global) => {
+        const sheetsRegistry = new SheetsRegistry();
+        /*const theme = createMuiTheme({
+            palette: {
+                primary: green,
+                //accent: red,
+                type: 'light',
+            },
+        });*/
+        const generateClassName = createGenerateClassName();
+        const renderHtml = renderToString(
+            <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
+                <MuiThemeProvider theme={theme} sheetsManager={new Map()}>
+                    <App fireBase={fireBase} global={global}/>
+                </MuiThemeProvider>
+            </JssProvider>
+        );
+        const css = sheetsRegistry.toString();
+        //const renderHtml = "<p>Page is loading</p>";
+        const appHtml = index.replace('<!-- ::APP:: -->', renderHtml)
+            .replace("<!-- ::style:: -->", css);
+        const finalHtml = appHtml.replace('/** ::GLOBAL:: **/', JSON.stringify(global));
+        res.set('Cache-Control', 'public, max-age=0, s-maxage=0');
+        //res.set('Cache-Control', 'public, max-age=600, s-maxage=1200');
+        res.send(finalHtml);
+
+        loadTimes = global["statistics"]["loadTimes"];
+        if(loadTimes){
             loadTimes++;
             metaDb.doc("statistics").set({
                 loadTimes
-            }).then(after => {
+            });/*.then(after => {
                 console.log("/ has been loaded " + loadTimes + " times.")
-            });
-        })
+            })*/
+        }
     });
 });
 
+app.get(['/bundle.js'], (req, res) => {
+    res.set('Cache-Control', 'public, max-age=0, s-maxage=0');
+    //res.set('Cache-Control', 'public, max-age=600, s-maxage=1200');
+    res.send(bundlejs);
+});
+
 // '/questions.json' route
-app.get(['/questions.json', '/questions', '/quiz.json', '/quiz'], (req, res) => {
+app.get(['/tables.json', '/tables'], (req, res) => {
     let fin = {};
-    quizDb.get().then(questions => {
-        questions.forEach(doc => {
+    tableDb.get().then(table => {
+        table.forEach(doc => {
             fin[doc.id] = doc.data();
         });
         res.set('Cache-Control', 'public, max-age=0, s-maxage=0');
         res.send(fin);
     });
-});
-// '/users.json' route
-app.get(['/users.json', '/users'], (req, res) => {
-    let fin = {};
-    usersDb.get().then(users => {
-        users.forEach(doc => {
-            fin[doc.id] = doc.data();
-        });
-        res.set('Cache-Control', 'public, max-age=0, s-maxage=0');
-        res.send(fin);
-    })
 });
 
 app.get(['/stat', '/stats'], (req, res) => {

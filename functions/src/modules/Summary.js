@@ -1,46 +1,36 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
+"use strict";
+var __extends = (this && this.__extends) || (function () {
+    var extendStatics = Object.setPrototypeOf ||
+        ({ __proto__: [] } instanceof Array && function (d, b) { d.__proto__ = b; }) ||
+        function (d, b) { for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p]; };
+    return function (d, b) {
+        extendStatics(d, b);
+        function __() { this.constructor = d; }
+        d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+    };
+})();
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = require("react");
+var Card_1 = require("material-ui/Card");
+var Typography_1 = require("material-ui/Typography");
+var Summary = (function (_super) {
+    __extends(Summary, _super);
+    function Summary(props) {
+        var _this = _super.call(this, props) || this;
+        _this.state = {
+            loadTimes: _this.props.global["statistics"]["loadTimes"]
+        };
+        return _this;
+    }
+    Summary.prototype.render = function () {
+        return (React.createElement(Card_1.default, null,
+            React.createElement(Card_1.CardContent, null,
+                React.createElement(Typography_1.default, { variant: "headline", component: "h2" }, "Statisztika"),
+                React.createElement(Typography_1.default, { component: "p" },
+                    "Bet\u00F6ltve ennyiszer: ",
+                    this.state.loadTimes))));
+    };
+    return Summary;
+}(React.Component));
 exports.default = Summary;
-
-var _preact = require('preact');
-
-var _style = require('./style');
-
-function Summary(props) {
-    return (0, _preact.h)(
-        'div',
-        { style: _style.padding },
-        (0, _preact.h)(
-            'div',
-            { 'class': 'mdl-card mdl-shadow--2dp' },
-            (0, _preact.h)(
-                'div',
-                { 'class': 'mdl-card__title' },
-                (0, _preact.h)(
-                    'h2',
-                    { 'class': 'mdl-card__title-text' },
-                    '\xD6szes\xEDt\xE9s'
-                )
-            ),
-            (0, _preact.h)(
-                'div',
-                { 'class': 'mdl-card__supporting-text' },
-                (0, _preact.h)(
-                    'p',
-                    null,
-                    'K\xE9rd\xE9sek sz\xE1ma: ',
-                    props.qNum
-                ),
-                (0, _preact.h)(
-                    'p',
-                    null,
-                    'Felhaszn\xE1l\xF3k sz\xE1ma: ',
-                    props.uNum
-                )
-            )
-        )
-    );
-}
+//# sourceMappingURL=Summary.js.map

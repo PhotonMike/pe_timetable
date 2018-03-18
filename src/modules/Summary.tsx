@@ -1,22 +1,35 @@
-import { h } from 'preact';
+import * as React from 'react';
 import { padding } from './style';
+import * as firebase from "firebase";
+import * as Database from '../Database';
+import Data from "./Data";
+import Card, { CardContent } from "material-ui/Card";
+import Typography from 'material-ui/Typography';
 
-export default function Summary(props){
-    return(
-        <div style={padding}>
-            <div class="mdl-card mdl-shadow--2dp">
-                <div class="mdl-card__title">
-                    <h2 class="mdl-card__title-text">Öszesítés</h2>
-                </div>
-                <div class="mdl-card__supporting-text">
-                    <p>
-                        Kérdések száma: {props.qNum}
-                    </p>
-                    <p>
-                        Felhasználók száma: {props.uNum}
-                    </p>
-                </div>
-            </div>
-        </div>
-    );
+interface summaryProps {
+    fB: firebase.app.App,
+    global: object
+}
+
+export default class Summary extends React.Component<summaryProps, any> {
+    constructor(props: summaryProps) {
+        super(props);
+        this.state = {
+            loadTimes: this.props.global["statistics"]["loadTimes"]
+        };
+    }
+    render() {
+        return(
+            <Card>
+                <CardContent>
+                    <Typography variant="headline" component="h2">
+                        Statisztika
+                    </Typography>
+                    <Typography component="p">
+                        Betöltve ennyiszer: {this.state.loadTimes}
+                    </Typography>
+                </CardContent>
+            </Card>
+        );
+    }
 }

@@ -1,24 +1,33 @@
 {
-  "name": "egeszsegquiz",
+  "name": "pe_timetable",
   "version": "0.0.1",
   "scripts": {
     "webpack": "node_modules/.bin/webpack",
-    "babel_src": "node_modules/.bin/babel src -d functions/src",
-    "babel_index": "node_modules/.bin/babel index.js -d functions",
-    "babel": "npm run babel_src && npm run babel_index",
-    "serve": "node_modules/.bin/firebase serve --only functions,hosting",
-    "prep": "npm run webpack & npm run babel",
-    "fbdeploy": "node_modules/.bin/firebase deploy",
+    "webpack-prod": "node_modules/.bin/webpack --config webpack.production.js",
+    "ts": "node_modules/.bin/tsc",
+    "prep": "npm run webpack & npm run ts",
+    "prep-prod": "npm run webpack-prod & npm run ts",
+    "serve": "firebase serve --only functions,hosting",
+    "fbdeploy": "firebase deploy --only functions,hosting",
     "start": "npm run prep && npm run serve",
-    "deploy": "npm run prep && npm run fbdeploy",
-    "serve-non-ssr": "npm run webpack && npm run serve-hosting"
+    "deploy": "npm run prep-prod && npm run fbdeploy"
   },
   "dependencies": {
-    "isomorphic-fetch": "^2.2.1",
-    "preact": "^8.2.7"
+    "cross-fetch": "^2.1.0",
+    "material-ui": "^1.0.0-beta.38",
+    "nervjs": "^1.2.15",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0"
   },
   "devDependencies": {
+    "@types/es6-shim": "^0.31.36",
+    "@types/react": "^16.0.40",
     "awesome-typescript-loader": "^4.0.1",
+    "babel-cli": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "css-loader": "^0.28.11",
     "express": "^4.15.4",
     "firebase": "^4.10.1",
     "firebase-admin": "^5.8.1",

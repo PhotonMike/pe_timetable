@@ -1,15 +1,20 @@
-import { h } from "preact";
+import * as React from 'react';
 import Summary from './Summary';
-import Table from './Table';
 import { body, sitePad, siteCont } from './style';
+import * as firebase from "firebase";
+import * as Database from "../Database";
 
-export default function Data(props) {
+interface dataProps {
+    fireBase: firebase.app.App;
+    global: object;
+}
+
+export default function Data(props: dataProps) {
     return(
         <div style={body}>
-            <Summary qNum={Object.keys(props.questions).length} uNum={Object.keys(props.users).length}/>
             <div style={siteCont}>
-                <Table questions={props.questions} users={props.users}/>
-                <div style={sitePad}/>
+                <Summary fB={props.fireBase} global={props.global}/>
+                {/*<div style={sitePad}/>*/}
             </div>
         </div>
     );

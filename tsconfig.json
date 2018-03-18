@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
     "outDir": "./functions/",
-    "module": "es6",
+    "module": "commonjs",
     "target": "es5",
     "removeComments": true,
-    "strictNullChecks": true,
+    "strictNullChecks": false,
+    "noImplicitAny": false,
     "jsx": "react",
-    "jsxFactory": "h",
-    "sourceMap": true
+    "sourceMap": true,
+    "moduleResolution": "Node"
   },
   "include": [
     "./src/",

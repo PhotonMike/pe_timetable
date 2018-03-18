@@ -1,34 +1,12 @@
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-exports.default = Data;
-
-var _preact = require('preact');
-
-var _Summary = require('./Summary');
-
-var _Summary2 = _interopRequireDefault(_Summary);
-
-var _Table = require('./Table');
-
-var _Table2 = _interopRequireDefault(_Table);
-
-var _style = require('./style');
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var React = require("react");
+var Summary_1 = require("./Summary");
+var style_1 = require("./style");
 function Data(props) {
-    return (0, _preact.h)(
-        'div',
-        { style: _style.body },
-        (0, _preact.h)(_Summary2.default, { qNum: Object.keys(props.questions).length, uNum: Object.keys(props.users).length }),
-        (0, _preact.h)(
-            'div',
-            { style: _style.siteCont },
-            (0, _preact.h)(_Table2.default, { questions: props.questions, users: props.users }),
-            (0, _preact.h)('div', { style: _style.sitePad })
-        )
-    );
+    return (React.createElement("div", { style: style_1.body },
+        React.createElement("div", { style: style_1.siteCont },
+            React.createElement(Summary_1.default, { fB: props.fireBase, global: props.global }))));
 }
+exports.default = Data;
+//# sourceMappingURL=Data.js.map

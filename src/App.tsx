@@ -1,8 +1,14 @@
-import { h } from 'preact';
+import * as React from 'react';
 import Data from './modules/Data';
+import * as firebase from "firebase";
 
-export default function App(props) {
+interface dataProps {
+    fireBase: firebase.app.App;
+    global: object;
+}
+
+export default function App(props: dataProps) {
     return(
-        <Data questions={props.questions} users={props.users}/>
+        <Data fireBase={props.fireBase} global={props.global}/>
     );
 }
