@@ -17,6 +17,7 @@
     "firebase-functions": "^0.8.1",
     "material-ui": "^1.0.0-beta.38",
     "nervjs": "^1.2.15",
+    "prop-types": "^15.6.1",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
     "react-jss": "^8.3.5"

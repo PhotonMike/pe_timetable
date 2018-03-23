@@ -48,13 +48,6 @@ app.use(compression());
 app.get(['/', '/app', '/index.html', '/index'], (req, res) => {
     Database.getGlobalAnd(fireBase, (global) => {
         const sheetsRegistry = new SheetsRegistry();
-        /*const theme = createMuiTheme({
-            palette: {
-                primary: green,
-                //accent: red,
-                type: 'light',
-            },
-        });*/
         const generateClassName = createGenerateClassName();
         const renderHtml = renderToString(
             <JssProvider registry={sheetsRegistry} generateClassName={generateClassName}>
@@ -64,7 +57,6 @@ app.get(['/', '/app', '/index.html', '/index'], (req, res) => {
             </JssProvider>
         );
         const css = sheetsRegistry.toString();
-        //const renderHtml = "<p>Page is loading</p>";
         const appHtml = index.replace('<!-- ::APP:: -->', renderHtml)
             .replace("<!-- ::style:: -->", css);
         const finalHtml = appHtml.replace('/** ::GLOBAL:: **/', JSON.stringify(global));
@@ -77,9 +69,7 @@ app.get(['/', '/app', '/index.html', '/index'], (req, res) => {
             loadTimes++;
             metaDb.doc("statistics").set({
                 loadTimes
-            });/*.then(after => {
-                console.log("/ has been loaded " + loadTimes + " times.")
-            })*/
+            });
         }
     });
 });

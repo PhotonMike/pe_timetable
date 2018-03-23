@@ -36,15 +36,6 @@ class Main extends React.Component<dataProps, any> {
     }
 }
 
-// Create a theme instance.
-/*const theme = createMuiTheme({
-    palette: {
-        primary: green,
-        //accent: red,
-        type: 'light',
-    },
-});*/
-
 if (window.__global__) {
     renderApp(fB, window.__global__);
     window.__fb__ = fB;

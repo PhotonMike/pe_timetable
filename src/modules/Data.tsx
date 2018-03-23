@@ -1,8 +1,10 @@
 import * as React from 'react';
 import Summary from './Summary';
-import { body, sitePad, siteCont } from './style';
+import { barPad, siteCont } from './style';
 import * as firebase from "firebase";
 import * as Database from "../Database";
+import MyAppBar from './MyAppBar';
+import MyDrawer from './MyDrawer';
 
 interface dataProps {
     fireBase: firebase.app.App;
@@ -11,11 +13,16 @@ interface dataProps {
 
 export default function Data(props: dataProps) {
     return(
-        <div style={body}>
-            <div style={siteCont}>
-                <Summary fB={props.fireBase} global={props.global}/>
-                {/*<div style={sitePad}/>*/}
-            </div>
+        <div>
+            <MyAppBar/>
+            <MyDrawer/>
+            <main>
+                <div style={barPad}/>
+                <div style={siteCont}>
+                    <Summary fB={props.fireBase} global={props.global}/>
+                    {/*<div style={sitePad}/>*/}
+                </div>
+            </main>
         </div>
     );
 }
